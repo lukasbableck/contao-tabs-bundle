@@ -1,0 +1,64 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+{% use '@Contao/component/_stylesheet.html.twig' %}
+
+{% set uniqid = random() %}
+
+{% block headline_attributes %}
+	{% set attributes = attrs(attributes)
+		.set('id', 'tabs-' ~ uniqid ~ '-headline')
+	%}
+	{{ parent() }}
+{% endblock %}
+
+{% block content %}
+	<div class="tablist" role="tablist" aria-labelledby="tabs-{{ uniqid }}-headline">
+		{% block tab_list %}
+			{% for element in elements %}
+				<button id="tabs-{{ uniqid }}-button-{{ loop.index0 }}" type="button" role="tab" aria-controls="tabs-{{ uniqid }}-content-{{ loop.index0 }}">
+					{% block tab_button %}
+						<{{ element.header_tag }}>
+							{{ element.header }}
+						</{{ element.header_tag }}>
+					{% endblock %}
+				</button>
+			{% endfor %}
+		{% endblock %}
+	</div>
+	<div class="tabs">
+		{% block tabs %}
+			{% for element in elements %}
+				<div id="tabs-{{ uniqid }}-content-{{ loop.index0 }}" role="tabpanel" aria-labelledby="tabs-{{ uniqid }}-button-{{ loop.index0 }}" class="tab-content">
+					{% block tab_content %}
+						{{ content_element(element.reference) }}
+					{% endblock %}
+				</div>
+			{% endfor %}
+		{% endblock %}
+	</div>
+{% endblock %}
+
+{% block script %}
+	{% add 'tabs_js' to body %}
+		{% set script_attributes = attrs()
+			.setIfExists('nonce', csp_nonce('script-src'))
+			.mergeWith(script_attributes|default)
+		%}
+		<script src="{{ asset('tabs.js', 'contao_tabs') }}"></script>
+		<script{{ script_attributes }}>
+			(function () {
+				document.querySelectorAll('.content-tabs').forEach((el) => {
+					const config = el.dataset.tabsConfig ? JSON.parse(el.dataset.tabsConfig) : {};
+					const tabs = new A11yTabs(el, config);
+				});
+			})();
+		</script>
+	{% endadd %}
+{% endblock %}
+
+{% block style %}
+	{% add 'tabs_css' to stylesheets %}
+		{% with {file: tinytabs_css_file|default(asset('tabs.css', 'contao_tabs'))} %}
+			{{ block('stylesheet_component') }}
+		{% endwith %}
+	{% endadd %}
+{% endblock %}
