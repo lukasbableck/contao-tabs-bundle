@@ -3,15 +3,14 @@
 
 {% set uniqid = random() %}
 
-{% block headline_attributes %}
-	{% set attributes = attrs(attributes)
-		.set('id', 'tabs-' ~ uniqid ~ '-headline')
-	%}
-	{{ parent() }}
-{% endblock %}
+
+{% block headline_attributes -%}
+    {% set headline = headline|merge({attributes: attrs().set('id', 'tabs-' ~ uniqid ~ '-headline').mergeWith(headline.attributes|default)}) %}
+    {{ parent() }}
+{%- endblock %}
 
 {% block content %}
-	<div class="tablist" role="tablist" aria-labelledby="tabs-{{ uniqid }}-headline">
+	<div class="tablist" role="tablist" {% if headline.text|default %}aria-labelledby="tabs-{{ uniqid }}-headline"{% endif %}>
 		{% block tab_list %}
 			{% for element in elements %}
 				<button id="tabs-{{ uniqid }}-button-{{ loop.index0 }}" type="button" role="tab" aria-controls="tabs-{{ uniqid }}-content-{{ loop.index0 }}">
@@ -47,8 +46,7 @@
 		<script{{ script_attributes }}>
 			(function () {
 				document.querySelectorAll('.content-tabs').forEach((el) => {
-					const config = el.dataset.tabsConfig ? JSON.parse(el.dataset.tabsConfig) : {};
-					const tabs = new A11yTabs(el, config);
+					const tabs = new A11yTabs(el);
 				});
 			})();
 		</script>
