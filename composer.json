@@ -16,7 +16,11 @@
 	],
     "require": {
         "php": "^8.1",
-        "contao/core-bundle": "^5.3"
+        "contao/core-bundle": "^5.3",
+        "symfony/config": "^6.4 || ^7.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0",
+        "symfony/http-foundation": "^6.4 || ^7.0",
+        "symfony/http-kernel": "^6.4 || ^7.0"
     },
 	"conflict": {
 		"contao/manager-plugin": "<2.0 || >=3.0"
@@ -25,6 +29,9 @@
 		"contao/manager-plugin": "^2.0",
 		"friendsofphp/php-cs-fixer": "^3.57",
         "vincentlanglet/twig-cs-fixer": "^3.5"
+	},
+	"suggest": {
+		"lukasbableck/contao-better-elementgroups-bundle": "Edit child content elements directly instead of having to go into the parent element."
 	},
     "autoload": {
         "psr-4": {

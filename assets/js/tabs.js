@@ -15,25 +15,48 @@ class A11yTabs{
 				element: tab
 			};
 		});
+		this.tabs.forEach((tab, index) => {
+			tab.element.addEventListener('click', () => {
+				this.setActiveTab(tab.id);
+			});
+			tab.element.addEventListener('keydown', (event) => {
+				if(event.key === 'Enter' || event.key === ' ') {
+					this.setActiveTab(tab.id);
+					event.preventDefault();
+				}else if(event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+					if(index === 0) {
+						return;
+					}
+					this.previousTab();
+					tab.element.previousElementSibling.focus();
+					event.preventDefault();
+				}else if(event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+					if(index === this.tabs.length - 1) {
+						return;
+					}
+					this.nextTab();
+					tab.element.nextElementSibling.focus();
+					event.preventDefault();
+				}
+			});
+		});
 		this.activeTabIndex = this.tabs.findIndex(tab => tab.isActive);
 		this.updateTabVisibility();
-		document.addEventListener('keydown', this.onKeydown.bind(this));
 	}
 	updateTabVisibility(){
 		this.tabs.forEach((tab, index) => {
 			tab.element.setAttribute('aria-selected', tab.isActive);
-			tab.element.addEventListener('click', () => {
-				this.setActiveTab(tab.id);
-			});
 		});
 		const activeTabContent = document.querySelector(`[role="tabpanel"][aria-labelledby="${this.tabs[this.activeTabIndex].id}"]`);
 		if(activeTabContent){
+			activeTabContent.removeAttribute('tabIndex');
 			activeTabContent.classList.remove('hidden');
 		}
 		const inactiveTabs = this.tabs.filter(t => !t.isActive);
 		inactiveTabs.forEach(tab => {
 			const content = document.querySelector(`[role="tabpanel"][aria-labelledby="${tab.id}"]`);
 			if(content){
+				content.tabIndex = -1;
 				content.classList.add('hidden');
 			}
 		});
@@ -56,21 +79,6 @@ class A11yTabs{
 	nextTab(){
 		if(this.activeTabIndex < this.tabs.length - 1){
 			this.setActiveTab(this.tabs[this.activeTabIndex + 1].id);
-		}
-	}
-	onKeydown(event){
-		if(event.key === 'ArrowLeft' || event.key === 'ArrowUp'){
-			this.previousTab();
-			event.preventDefault();
-		} else if(event.key === 'ArrowRight' || event.key === 'ArrowDown'){
-			this.nextTab();
-			event.preventDefault();
-		} else if(event.key === 'Home'){
-			this.setActiveTab(this.tabs[0].id);
-			event.preventDefault();
-		} else if(event.key === 'End'){
-			this.setActiveTab(this.tabs[this.tabs.length - 1].id);
-			event.preventDefault();
 		}
 	}
 }
