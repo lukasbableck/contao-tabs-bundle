@@ -60,6 +60,13 @@ class A11yTabs {
 				content.classList.add('hidden');
 			}
 		});
+		const event = new CustomEvent('a11y-tabs:after-change', {
+			detail: {
+				activeTab: this.tabs[this.activeTabIndex],
+				allTabs: this.tabs,
+			},
+		});
+		this.element.dispatchEvent(event);
 	}
 
 	setActiveTab(tab) {
