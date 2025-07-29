@@ -5,7 +5,9 @@
 
 
 {% block headline_attributes -%}
-    {% set headline = headline|merge({attributes: attrs().set('id', 'tabs-' ~ uniqid ~ '-headline').mergeWith(headline.attributes|default)}) %}
+	{% set attributes = attrs(attributes|default)
+		.set('id', 'tabs-' ~ uniqid ~ '-headline')
+	%}
     {{ parent() }}
 {%- endblock %}
 
