@@ -43,6 +43,8 @@ class A11yTabs {
 	}
 
 	updateTabVisibility() {
+		if(this.activeTabIndex == -1) return;
+
 		this.tabs.forEach((tab) => {
 			tab.element.setAttribute('tabindex', tab.isActive ? '0' : '-1');
 			tab.element.setAttribute('aria-selected', tab.isActive);
