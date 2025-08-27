@@ -1,10 +1,12 @@
 {
     "name": "lukasbableck/contao-tabs-bundle",
     "type": "contao-bundle",
-	"description": "This bundle provides a tabs element for Contao. It allows you to create tabbed content sections easily.",
+	"description": "This bundle provides an accessible tabs element for Contao. It allows you to create tabbed content sections easily.",
 	"keywords": [
 		"contao",
-		"tabs"
+		"tabs",
+		"accessibility",
+		"a11y"
 	],
     "license": "LGPL-3.0-or-later",
 	"authors": [
