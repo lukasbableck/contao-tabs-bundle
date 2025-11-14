@@ -20,6 +20,8 @@ class TabsPaletteListener {
 			return $palette;
 		}
 
+		$GLOBALS['TL_DCA']['tl_content']['fields']['sectionHeadline']['eval']['mandatory'] = true;
+
 		return PaletteManipulator::create()
 			->addLegend('section_legend', 'type_legend', PaletteManipulator::POSITION_BEFORE)
 			->addField('sectionHeadline', 'section_legend', PaletteManipulator::POSITION_APPEND)

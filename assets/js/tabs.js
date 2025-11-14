@@ -5,8 +5,9 @@ class A11yTabs {
 		this.element = element;
 		this.tabs = [];
 		this.activeTabIndex = 0;
-		this.orientation = this.element.querySelector('[role="tablist"]').getAttribute('aria-orientation') || 'horizontal';
-		this.tabs = Array.from(this.element.querySelectorAll('[role="tab"]')).map((tab, index) => {
+		this.tablist = this.element.querySelector('[role="tablist"]');
+		this.orientation = this.tablist.getAttribute('aria-orientation') || 'horizontal';
+		this.tabs = Array.from(this.tablist.querySelectorAll('[role="tab"]')).map((tab, index) => {
 			return {
 				id: tab.id,
 				isActive: index === 0,
